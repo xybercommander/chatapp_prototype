@@ -10,7 +10,21 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarMain()
+      appBar: appBarMain(),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: TextField()
+                ),
+                Image.asset("assets/images/search.png")
+              ],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
