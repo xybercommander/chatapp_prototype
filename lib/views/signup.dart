@@ -18,6 +18,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
 
   bool isLoading = false;
+  bool showPassword = false;
 
   AuthMethods authMethods = new AuthMethods();
 
@@ -88,7 +89,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: textFieldInputDecoration("email")
                       ),
                       TextFormField(
-                        obscureText: true,
+                        obscureText: showPassword ? false : true,
                         validator: (password){
                           return password.length > 6 ?
                             null : 
@@ -102,12 +103,33 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 SizedBox(height: 8,),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Text("Forgot Password?", style: simpleStyle(),),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        child: Container(                        
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          child: showPassword ?
+                            Text("Hide password", style: TextStyle(fontSize: 13, color: Colors.white38),) :
+                            Text("Show password", style: TextStyle(fontSize: 13, color: Colors.white38),),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Text("Forgot Password?", style: simpleStyle(),),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 16,),
                 GestureDetector(

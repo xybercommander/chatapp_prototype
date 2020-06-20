@@ -1,5 +1,6 @@
 import 'package:chat_app/helper/authenticate.dart';
 import 'package:chat_app/services/auth.dart';
+import 'package:chat_app/views/search.dart';
 import 'package:chat_app/views/signin.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(        
         backgroundColor: Color.fromRGBO(20, 82, 146, 1),    
         title: Image.asset("assets/images/chatapp .jpg", height: 90,),
         actions: <Widget>[
@@ -33,6 +34,12 @@ class _ChatRoomState extends State<ChatRoom> {
             ),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.search),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+        },
       ),
     );
   }
