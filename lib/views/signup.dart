@@ -1,3 +1,4 @@
+import 'package:chat_app/services/database.dart';
 import 'package:chat_app/views/chatRoomScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/widgets/widget.dart';
@@ -21,6 +22,7 @@ class _SignUpState extends State<SignUp> {
   bool showPassword = false;
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
@@ -29,15 +31,23 @@ class _SignUpState extends State<SignUp> {
 
   // Sign up Method
   signMeUp() {
+
+    // method call for sending data to the firestore database        
+    Map<String, String> userInfoMap = {
+      "name" : userNameTextEditingController.text,
+      "email" : emailTextEditingController.text
+    };
+    databaseMethods.uploadUserInfo(userInfoMap);
+
     if(formKey.currentState.validate()){
       setState(() {
         isLoading = true;
       });
-    };
+    };    
 
     authMethods.signUpWithEmailAndPassword
       (emailTextEditingController.text, passwordTextEditingController.text).then((value){
-        print("${value.userId}");
+        print("${value.userId}");        
 
         Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => ChatRoom()
