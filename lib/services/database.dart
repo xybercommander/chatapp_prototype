@@ -12,4 +12,13 @@ class DatabaseMethods {
     Firestore.instance.collection("users").add(userMap);
   }
 
+
+  createChatRoom(String chatroomId, chatroomMap) {
+    Firestore.instance.collection("ChatRoom")
+      .document(chatroomId)
+      .setData(chatroomMap).catchError((e) {
+        print(e.toString());
+      });
+  }
+
 }

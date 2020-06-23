@@ -35,18 +35,12 @@ class _SearchScreenState extends State<SearchScreen> {
           userEmail: searchSnapshot.documents[index].data["email"],
         );
       }) : 
-    Container(
-      color: Colors.redAccent,
-      width: 100,
-      height: 100,
-    );
+    Container();
   }
 
-  @override
-  void initState() {
-    
-    super.initState();
-  }
+
+  /// create chatroom, send user to conversation screen, pushreplacement
+
 
   @override
   Widget build(BuildContext context) {
@@ -126,15 +120,20 @@ class SearchTile extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xff007EF4), Color(0xff2A75BC)]
+          GestureDetector(
+            onTap: () {
+              
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xff007EF4), Color(0xff2A75BC)]
+                ),
+                borderRadius: BorderRadius.circular(30)
               ),
-              borderRadius: BorderRadius.circular(30)
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Text("Message", style: mediumStyle(Colors.white),),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: Text("Message", style: mediumStyle(Colors.white),),
           )
         ],
       ),
