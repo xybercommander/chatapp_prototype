@@ -145,13 +145,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                        child: Text("Forgot Password?", style: simpleStyle(),),
-                      ),
-                    ),
+                    Spacer()                    
                   ],
                 ),
                 SizedBox(height: 16,),

@@ -40,6 +40,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
 
   /// create chatroom, send user to conversation screen, pushreplacement
+  // createChatRoomAndStartConversation(String username) {
+
+  //   List<String> user = [username, ];
+  //   databaseMethods.createChatRoom(chatroomId, chatroomMap);
+  // }
 
 
   @override
