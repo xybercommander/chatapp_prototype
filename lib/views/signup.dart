@@ -1,3 +1,4 @@
+import 'package:chat_app/helper/helperfunctions.dart';
 import 'package:chat_app/services/database.dart';
 import 'package:chat_app/views/chatRoomScreen.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _SignUpState extends State<SignUp> {
   AuthMethods authMethods = new AuthMethods();
   DatabaseMethods databaseMethods = new DatabaseMethods();
 
+
   final formKey = GlobalKey<FormState>();
   TextEditingController userNameTextEditingController = new TextEditingController();
   TextEditingController emailTextEditingController = new TextEditingController();
@@ -32,28 +34,39 @@ class _SignUpState extends State<SignUp> {
   // Sign up Method
   signMeUp() {
 
-    // method call for sending data to the firestore database        
-    Map<String, String> userInfoMap = {
-      "name" : userNameTextEditingController.text,
-      "email" : emailTextEditingController.text
-    };
-    databaseMethods.uploadUserInfo(userInfoMap);
+    // method call for sending data to the firestore database            
 
     if(formKey.currentState.validate()){
+
+      Map<String, String> userInfoMap = {
+        "name" : userNameTextEditingController.text,
+        "email" : emailTextEditingController.text
+      };
+      HelperFunctions.saveUserEmailSharedPreference(emailTextEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(userNameTextEditingController.text);
+
+
+      authMethods.signUpWithEmailAndPassword
+        (emailTextEditingController.text, passwordTextEditingController.text).then((value){
+          // print("${value.userId}");        
+
+          databaseMethods.uploadUserInfo(userInfoMap);
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (context) => ChatRoom()
+          ));
+        });
+
+
       setState(() {
         isLoading = true;
       });
-    };    
-
-    authMethods.signUpWithEmailAndPassword
-      (emailTextEditingController.text, passwordTextEditingController.text).then((value){
-        print("${value.userId}");        
-
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) => ChatRoom()
-        ));
-      });
+    };   
+    
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
