@@ -1,3 +1,4 @@
+import 'package:chat_app/helper/constants.dart';
 import 'package:chat_app/helper/helperfunctions.dart';
 import 'package:chat_app/services/auth.dart';
 import 'package:chat_app/services/database.dart';
@@ -29,6 +30,8 @@ class _SignInState extends State<SignIn> {
   bool showPassword = false;
   QuerySnapshot snapShotUserInfo;
 
+
+
   // Sing in method
   signIn() {
     if(formKey.currentState.validate()) {
@@ -43,7 +46,7 @@ class _SignInState extends State<SignIn> {
       .then((value) {
         snapShotUserInfo = value;
         HelperFunctions
-          .saveUserNameSharedPreference(snapShotUserInfo.documents[0].data["name"]);
+          .saveUserNameSharedPreference(snapShotUserInfo.documents[0].data["name"]);        
       });      
 
       authMethods.signInWithEmailAndPassword
@@ -66,7 +69,11 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarMain(),
-      body: SingleChildScrollView(
+      body: isLoading ? 
+      Container(
+        child: Center(child: CircularProgressIndicator()),
+      ) :
+      SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height - 100,
           alignment: Alignment.bottomCenter,

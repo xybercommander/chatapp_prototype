@@ -19,7 +19,7 @@ class DatabaseMethods {
   }
 
 
-  createChatRoom(String chatroomId, chatroomMap) {
+  createChatRoom(String chatroomId, dynamic chatroomMap) {
     Firestore.instance.collection("ChatRoom")
       .document(chatroomId)
       .setData(chatroomMap).catchError((e) {
