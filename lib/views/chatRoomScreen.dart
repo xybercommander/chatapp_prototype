@@ -14,8 +14,8 @@ class ChatRoom extends StatefulWidget {
 
 class _ChatRoomState extends State<ChatRoom> {
 
-  AuthMethods authMethods = new AuthMethods();
-
+  AuthMethods authMethods = new AuthMethods();  
+  String myUserName = "";
 
   @override
   void initState() {
@@ -24,7 +24,10 @@ class _ChatRoomState extends State<ChatRoom> {
   }
 
   getUserInfo() async {
-    Constants.myName = await HelperFunctions.getUserNameSharedPreference();
+    myUserName = await HelperFunctions.getUserNameSharedPreference();
+    setState(() {
+      Constants.myName = myUserName;
+    });
   }
 
 
@@ -52,7 +55,7 @@ class _ChatRoomState extends State<ChatRoom> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
-        onPressed: () {
+        onPressed: () {          
           Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
         },
       ),

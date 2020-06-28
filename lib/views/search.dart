@@ -4,6 +4,7 @@ import 'package:chat_app/views/conversationScreen.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_app/helper/helperfunctions.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
 
+  String _myName;
   QuerySnapshot searchSnapshot;
 
   initiateSearch() {
@@ -32,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
       shrinkWrap: true,
       itemCount: searchSnapshot.documents.length,
       itemBuilder: (context, index) {
-        return SearchTile(
+        return searchTile(
           userName: searchSnapshot.documents[index].data["name"],
           userEmail: searchSnapshot.documents[index].data["email"],
         );
@@ -42,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   /// create chatroom, send user to conversation screen, pushreplacement
   createChatRoomAndStartConversation({BuildContext context, String username}) {
-
+    print("${Constants.myName}");
     if(username != Constants.myName) {
       String chatRoomId = getChatroomId(username, Constants.myName);
 
@@ -58,12 +60,12 @@ class _SearchScreenState extends State<SearchScreen> {
       ));
     } else {
       print("You cannot send messages to yourself");
-    }
+    }    
   }
 
 
 
-  Widget SearchTile({String userName, String userEmail}) {
+  Widget searchTile({String userName, String userEmail}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -96,6 +98,15 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  getUserInfo() async {
+    print(Constants.myName);    
+  }
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
 
 
   @override
@@ -161,5 +172,5 @@ getChatroomId(String a, String b) {
     return "$b\_$a";
   } else {
     return "$a\_$b";
-  }
+  }  
 }

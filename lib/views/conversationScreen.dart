@@ -1,3 +1,4 @@
+import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class ConversationScreen extends StatefulWidget {
@@ -8,8 +9,9 @@ class ConversationScreen extends StatefulWidget {
 class _ConversationScreenState extends State<ConversationScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: appBarMain(),
+      // body: ,
     );
   }
 }
