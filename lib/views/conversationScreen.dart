@@ -7,11 +7,15 @@ class ConversationScreen extends StatefulWidget {
 }
 
 class _ConversationScreenState extends State<ConversationScreen> {
+  
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
       appBar: appBarMain(),
-      // body: ,
+      body: Center(
+        child: Text("data", style: TextStyle(color: Colors.white),),
+      ),
     );
   }
 }

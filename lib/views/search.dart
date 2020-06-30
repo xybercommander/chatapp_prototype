@@ -15,8 +15,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchTextEditingController = new TextEditingController();
-
-  String _myName;
+  
   QuerySnapshot searchSnapshot;
 
   initiateSearch() {
@@ -42,25 +41,24 @@ class _SearchScreenState extends State<SearchScreen> {
     Container();
   }
 
+
+
   /// create chatroom, send user to conversation screen, pushreplacement
-  createChatRoomAndStartConversation({BuildContext context, String username}) {
-    print("${Constants.myName}");
-    if(username != Constants.myName) {
-      String chatRoomId = getChatroomId(username, Constants.myName);
+  createChatRoomAndStartConversation({String username}) {    
+    
+    String chatRoomId = getChatroomId(username, Constants.myName);
 
-      List<String> users = [username, Constants.myName];
-      Map<String, dynamic> chatRoomMap = {
-        "users" : users,
-        "chatroomId" : chatRoomId
-      };
+    List<String> users = [username, Constants.myName];
+    Map<String, dynamic> chatRoomMap = {
+      "users" : users,
+      "chatroomId" : chatRoomId
+    };
 
-      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(context, MaterialPageRoute(
-        builder: (context) => ConversationScreen()
-      ));
-    } else {
-      print("You cannot send messages to yourself");
-    }    
+    DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+    Navigator.pushReplacement(context, MaterialPageRoute(
+      builder: (context) => ConversationScreen()
+    ));
+       
   }
 
 
@@ -97,6 +95,8 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+
+  
 
   getUserInfo() async {
     print(Constants.myName);    
