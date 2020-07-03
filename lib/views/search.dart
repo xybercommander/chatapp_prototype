@@ -56,7 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
     DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
     Navigator.pushReplacement(context, MaterialPageRoute(
-      builder: (context) => ConversationScreen()
+      builder: (context) => ConversationScreen(chatRoomId)
     ));
        
   }

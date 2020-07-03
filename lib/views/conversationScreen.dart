@@ -1,7 +1,12 @@
+import 'package:chat_app/helper/constants.dart';
+import 'package:chat_app/services/database.dart';
 import 'package:chat_app/widgets/widget.dart';
 import 'package:flutter/material.dart';
 
 class ConversationScreen extends StatefulWidget {
+  final String chatroomId;
+  ConversationScreen(this.chatroomId);
+
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
 }
@@ -9,12 +14,57 @@ class ConversationScreen extends StatefulWidget {
 class _ConversationScreenState extends State<ConversationScreen> {
   
 
+  DatabaseMethods dataBaseMethods = new DatabaseMethods();
+  TextEditingController messaageController = new TextEditingController();
+  Stream chatMessageStream;
+
+  Widget chatMessageList() {
+    return StreamBuilder(
+      stream: chatMessageStream,
+      builder: (context, snapshot) {
+        return ListView.builder(
+          itemCount: snapshot.data.documents.length,
+          itemBuilder: (context, index) {
+            return MessageTile(snapshot.data.documents[index].data["message"]);
+          },
+        );
+      },
+    );
+  }
+
+
+  sendMessage() {
+    if(messaageController.text.isNotEmpty) {
+
+      Map<String, String> messageMap = {
+        "message" : messaageController.text,
+        "sentBy" : Constants.myName
+      };
+
+      dataBaseMethods.addConversationMessages(widget.chatroomId, messageMap);
+      messaageController.text = "";
+    }
+  }
+
+
+  @override
+  void initState() {
+    dataBaseMethods.getConversationMessages(widget.chatroomId).then((value) {
+      setState(() {
+        chatMessageStream = value;
+      });
+    });
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {    
     return Scaffold(
       appBar: appBarMain(),
       body: Stack(
         children: [
+          chatMessageList(),
           Container(
             alignment: Alignment.bottomCenter,
             child: Container(
@@ -24,7 +74,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 children: <Widget>[
                   Expanded(
                     child: TextField(
-                      // controller: searchTextEditingController,
+                      controller: messaageController,
                       style: TextStyle(
                         color: Colors.white
                       ),
@@ -39,7 +89,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-
+                      sendMessage();
                     },
                     child: Container(
                       height: 40,
@@ -60,6 +110,19 @@ class _ConversationScreenState extends State<ConversationScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MessageTile extends StatelessWidget {
+
+  final String message;
+  MessageTile(this.message);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text(message),
     );
   }
 }

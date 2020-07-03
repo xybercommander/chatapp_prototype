@@ -28,11 +28,18 @@ class DatabaseMethods {
   }
 
 
-  getConversationMessages(String chatroomId, messageMap) {
+  addConversationMessages(String chatroomId, messageMap) {
     Firestore.instance.collection("ChatRoom")
       .document(chatroomId)
       .collection("chats")
-      .add(messageMap).catchError((e){print(e.toString())});
+      .add(messageMap).catchError((e){print(e.toString());});
+  }
+
+   getConversationMessages(String chatroomId) async {
+    return await Firestore.instance.collection("ChatRoom")
+      .document(chatroomId)
+      .collection("chats")
+      .snapshots();
   }
 
 }
