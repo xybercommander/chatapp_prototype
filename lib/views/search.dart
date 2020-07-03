@@ -44,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
 
   /// create chatroom, send user to conversation screen, pushreplacement
-  createChatRoomAndStartConversation({String username}) {    
+  createChatRoomAndStartConversation({String username}) async {    
     
     String chatRoomId = getChatroomId(username, Constants.myName);
 
@@ -54,7 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
       "chatroomId" : chatRoomId
     };
 
-    DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+    await DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
     Navigator.pushReplacement(context, MaterialPageRoute(
       builder: (context) => ConversationScreen(chatRoomId)
     ));

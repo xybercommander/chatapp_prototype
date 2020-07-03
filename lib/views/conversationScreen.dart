@@ -22,12 +22,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
     return StreamBuilder(
       stream: chatMessageStream,
       builder: (context, snapshot) {
-        return ListView.builder(
+        return snapshot.hasData ? ListView.builder(
           itemCount: snapshot.data.documents.length,
           itemBuilder: (context, index) {
-            return MessageTile(snapshot.data.documents[index].data["message"]);
+            return MessageTile(snapshot.data.documents[index].data["message"],
+              snapshot.data.documents[index].data["sentBy"] == Constants.myName);
           },
-        );
+        ) : Container();
       },
     );
   }
@@ -36,9 +37,10 @@ class _ConversationScreenState extends State<ConversationScreen> {
   sendMessage() {
     if(messaageController.text.isNotEmpty) {
 
-      Map<String, String> messageMap = {
+      Map<String, dynamic> messageMap = {
         "message" : messaageController.text,
-        "sentBy" : Constants.myName
+        "sentBy" : Constants.myName,
+        "time" : DateTime.now().millisecondsSinceEpoch
       };
 
       dataBaseMethods.addConversationMessages(widget.chatroomId, messageMap);
@@ -117,12 +119,45 @@ class _ConversationScreenState extends State<ConversationScreen> {
 class MessageTile extends StatelessWidget {
 
   final String message;
-  MessageTile(this.message);
+  final bool isSentByMe;
+  MessageTile(this.message, this.isSentByMe);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(message),
+      width: MediaQuery.of(context).size.width,
+      alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
+      margin: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.only(left: isSentByMe ? 0 : 20, right:  isSentByMe ? 20 : 0),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isSentByMe ? [
+              Color(0xff007Ef4),
+              Color(0xff2A75BC),
+            ] : [
+              Color(0x1AFFFFFF),
+              Color(0x1AFFFFFF),
+            ]
+          ),
+          borderRadius: isSentByMe ?
+            BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomLeft: Radius.circular(23),
+            ) :
+            BorderRadius.only(
+              topLeft: Radius.circular(23),
+              topRight: Radius.circular(23),
+              bottomRight: Radius.circular(23),
+            )
+        ),
+        child: Text(message, style: TextStyle(
+          color: Colors.white,
+          fontSize: 17
+        ),),
+      ),
     );
   }
 }
